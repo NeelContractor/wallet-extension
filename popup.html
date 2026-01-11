@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solana Wallet</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <!-- Welcome Screen -->
+  <div id="welcomeScreen" class="screen active">
+    <div class="wallet-icon">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+      </svg>
+    </div>
+    <h1>Solana Wallet</h1>
+    <p class="subtitle">Secure, fast, and elegant</p>
+    <div class="button-group">
+      <button class="btn btn-primary" id="createWalletBtn">Create New Wallet</button>
+      <button class="btn btn-secondary" id="importWalletBtn">Import Existing Wallet</button>
+    </div>
+    <p class="terms">By proceeding, you agree to the Terms of Service</p>
+  </div>
+
+  <!-- Create Password Screen -->
+  <div id="createPasswordScreen" class="screen">
+    <h2>Create Password</h2>
+    <p class="subtitle">This password will unlock your wallet</p>
+    <form id="createPasswordForm">
+      <div class="input-group">
+        <label>Password</label>
+        <input type="password" id="password" placeholder="Enter password" required>
+      </div>
+      <div class="input-group">
+        <label>Confirm Password</label>
+        <input type="password" id="confirmPassword" placeholder="Confirm password" required>
+      </div>
+      <div class="button-group">
+        <button type="button" class="btn btn-secondary" id="backToWelcome">Back</button>
+        <button type="submit" class="btn btn-primary">Continue</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Seed Phrase Backup Screen -->
+  <div id="seedBackupScreen" class="screen">
+    <h2>Secret Recovery Phrase</h2>
+    <p class="subtitle">Write down these 12 words in order. Never share them.</p>
+    <div class="warning-box">
+      <span>⚠️</span> Store this phrase safely. It's the only way to recover your wallet.
+    </div>
+    <div class="seed-container">
+      <div id="seedGrid" class="seed-grid"></div>
+      <button id="revealSeedBtn" class="btn-reveal">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+          <circle cx="12" cy="12" r="3"></circle>
+        </svg>
+        Reveal Phrase
+      </button>
+    </div>
+    <button id="copySeedBtn" class="btn btn-secondary" style="display:none;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+      </svg>
+      Copy to Clipboard
+    </button>
+    <button id="confirmSeedBtn" class="btn btn-primary" disabled>I've Saved My Phrase</button>
+  </div>
+
+  <!-- Main Wallet Screen -->
+  <div id="mainScreen" class="screen">
+    <div class="header">
+      <div class="wallet-info">
+        <div class="wallet-icon-small">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+          </svg>
+        </div>
+        <div>
+          <div class="wallet-name">My Wallet</div>
+          <div class="network">Mainnet</div>
+        </div>
+      </div>
+      <button class="icon-btn" id="settingsBtn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M12 1v6m0 6v6m9-9h-6m-6 0H3"></path>
+        </svg>
+      </button>
+    </div>
+
+    <div class="address-bar">
+      <span id="walletAddress">7xKX...gAsU</span>
+      <button class="icon-btn" id="copyAddressBtn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+        </svg>
+      </button>
+    </div>
+
+    <div class="balance-section">
+      <div class="balance-label">Total Balance</div>
+      <div class="balance-amount" id="balanceAmount">0.00</div>
+      <div class="balance-currency">SOL</div>
+      <div class="balance-usd" id="balanceUsd">≈ $0.00 USD</div>
+    </div>
+
+    <div class="action-buttons">
+      <button class="action-btn" id="sendBtn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="22" y1="2" x2="11" y2="13"></line>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+        </svg>
+        <span>Send</span>
+      </button>
+      <button class="action-btn" id="receiveBtn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="8 17 12 21 16 17"></polyline>
+          <line x1="12" y1="12" x2="12" y2="21"></line>
+          <path d="M20.88 18.09A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.29"></path>
+        </svg>
+        <span>Receive</span>
+      </button>
+      <button class="action-btn" id="swapBtn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="23 4 23 10 17 10"></polyline>
+          <polyline points="1 20 1 14 7 14"></polyline>
+          <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+        </svg>
+        <span>Swap</span>
+      </button>
+    </div>
+
+    <div class="activity-section">
+      <h3>Recent Activity</h3>
+      <div id="activityList" class="activity-list">
+        <div class="activity-item">
+          <div class="activity-icon received">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="8 17 12 21 16 17"></polyline>
+              <line x1="12" y1="12" x2="12" y2="21"></line>
+            </svg>
+          </div>
+          <div class="activity-info">
+            <div class="activity-type">Received</div>
+            <div class="activity-time">2 hours ago</div>
+          </div>
+          <div class="activity-amount positive">+0.5 SOL</div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-icon sent">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+          </div>
+          <div class="activity-info">
+            <div class="activity-type">Sent</div>
+            <div class="activity-time">1 day ago</div>
+          </div>
+          <div class="activity-amount">-0.25 SOL</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Send Screen -->
+  <div id="sendScreen" class="screen">
+    <div class="screen-header">
+      <button class="icon-btn" id="backFromSend">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+      </button>
+      <h2>Send SOL</h2>
+    </div>
+    <form id="sendForm">
+      <div class="input-group">
+        <label>Recipient Address</label>
+        <input type="text" id="recipientAddress" placeholder="Enter Solana address" required>
+      </div>
+      <div class="input-group">
+        <label>Amount</label>
+        <div class="amount-input">
+          <input type="number" id="sendAmount" placeholder="0.00" step="0.01" required>
+          <span class="currency">SOL</span>
+        </div>
+        <div class="available">Available: <span id="availableBalance">0.00</span> SOL</div>
+      </div>
+      <div class="fee-box">
+        <div class="fee-row">
+          <span>Network Fee</span>
+          <span>0.000005 SOL</span>
+        </div>
+        <div class="fee-row total">
+          <span>Total</span>
+          <span id="totalAmount">0.000005 SOL</span>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">Review Transaction</button>
+    </form>
+  </div>
+
+  <!-- Receive Screen -->
+  <div id="receiveScreen" class="screen">
+    <div class="screen-header">
+      <button class="icon-btn" id="backFromReceive">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+      </button>
+      <h2>Receive SOL</h2>
+    </div>
+    <div class="receive-content">
+      <div class="qr-code">
+        <div class="qr-placeholder">QR Code</div>
+      </div>
+      <p class="receive-label">Your Wallet Address</p>
+      <div class="receive-address" id="receiveAddress">7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU</div>
+      <button class="btn btn-primary" id="copyReceiveAddressBtn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+        </svg>
+        Copy Address
+      </button>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
