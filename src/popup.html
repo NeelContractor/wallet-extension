@@ -10,12 +10,11 @@
   <!-- Welcome Screen -->
   <div id="welcomeScreen" class="screen active">
     <div class="wallet-icon">
-      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
-        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
-      </svg>
+      <div>
+        <img src="/icons/logo.png" style="width: 100px; height: 100px;">
+      </div>
     </div>
-    <h1>Solana Wallet</h1>
+    <h1>Neel Wallet</h1>
     <p class="subtitle">Secure, fast, and elegant</p>
     <div class="button-group">
       <button class="btn btn-primary" id="createWalletBtn">Create New Wallet</button>
@@ -49,7 +48,7 @@
     <h2>Secret Recovery Phrase</h2>
     <p class="subtitle">Write down these 12 words in order. Never share them.</p>
     <div class="warning-box">
-      <span>⚠️</span> Store this phrase safely. It's the only way to recover your wallet.
+      Store this phrase safely. It's the only way to recover your wallet.
     </div>
     <div class="seed-container">
       <div id="seedGrid" class="seed-grid"></div>
@@ -74,12 +73,11 @@
   <!-- Main Wallet Screen -->
   <div id="mainScreen" class="screen">
     <div class="header">
-      <div class="wallet-info">
-        <div class="wallet-icon-small">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
-            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
-          </svg>
+      <div>
+        <div>
+          <div>
+            <img src="/icons/logo.png" style="width: 25px; height: 25px;">
+          </div>
         </div>
         <div>
           <div class="wallet-name">My Wallet</div>
@@ -197,11 +195,11 @@
       <div class="fee-box">
         <div class="fee-row">
           <span>Network Fee</span>
-          <span>0.000005 SOL</span>
+          <span>0.000005 SOL</span> // TODO: add real logic
         </div>
         <div class="fee-row total">
           <span>Total</span>
-          <span id="totalAmount">0.000005 SOL</span>
+          <span id="totalAmount">0.000005 SOL</span> // TODO: add real logic
         </div>
       </div>
       <button type="submit" class="btn btn-primary">Review Transaction</button>
