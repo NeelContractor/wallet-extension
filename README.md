@@ -25,4 +25,9 @@ npm run build
 in browser go to chrome://extensions
 click on 'Load Unpack' on top right.
 
-5. open dist folder
+5. open dist folder or wherever manifest.json file exists
+
+# Todo
+- complete import wallet functionality
+- in few thing extension show popup from user to accept like sending sol transaction, can add logic show accept popup inside the extension
+- add logic to get signature of transaction in recent transactions/ recent Activity.

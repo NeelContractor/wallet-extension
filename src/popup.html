@@ -7,8 +7,22 @@
   <link rel="stylesheet" href="popup.css">
 </head>
 <body>
+  <!-- Loading Screen -->
+  <div id="loadingScreen" class="screen active">
+    <div class="loading-container">
+      <div class="wallet-icon">
+        <div>
+          <img src="/icons/logo.png" style="width: 100px; height: 100px;">
+        </div>
+      </div>
+      <h1>Neel Wallet</h1>
+      <div class="loading-spinner"></div>
+      <p class="loading-text">Loading wallet...</p>
+    </div>
+  </div>
+
   <!-- Welcome Screen -->
-  <div id="welcomeScreen" class="screen active">
+  <div id="welcomeScreen" class="screen">
     <div class="wallet-icon">
       <div>
         <img src="/icons/logo.png" style="width: 100px; height: 100px;">
@@ -21,6 +35,24 @@
       <button class="btn btn-secondary" id="importWalletBtn">Import Existing Wallet</button>
     </div>
     <p class="terms">By proceeding, you agree to the Terms of Service</p>
+  </div>
+
+  <!-- Unlock Wallet Screen -->
+  <div id="unlockScreen" class="screen">
+    <div class="wallet-icon">
+      <div>
+        <img src="/icons/logo.png" style="width: 80px; height: 80px;">
+      </div>
+    </div>
+    <h2>Welcome Back</h2>
+    <p class="subtitle">Unlock your wallet to continue</p>
+    <form id="unlockForm">
+      <div class="input-group">
+        <label>Password</label>
+        <input type="password" id="unlockPassword" placeholder="Enter password" required autofocus>
+      </div>
+      <button type="submit" class="btn btn-primary">Unlock Wallet</button>
+    </form>
   </div>
 
   <!-- Create Password Screen -->
@@ -80,16 +112,26 @@
           </div>
         </div>
         <div>
-          <div class="wallet-name">My Wallet</div>
+          <div class="wallet-name">
+            <select id="accountSelector" class="account-selector">
+              <option value="0">Account 1</option>
+            </select>
+          </div>
           <div class="network">Mainnet</div>
         </div>
       </div>
-      <button class="icon-btn" id="settingsBtn">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="3"></circle>
-          <path d="M12 1v6m0 6v6m9-9h-6m-6 0H3"></path>
-        </svg>
-      </button>
+      <div style="display: flex; gap: 8px;">
+        <button class="icon-btn" id="addAccountBtn" title="Add Account">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+          </svg>
+        </button>
+        <button class="icon-btn" id="settingsBtn" title="Switch Network">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8.288 15.038a5.25 5.25 0 0 1 7.424 0M5.106 11.856c3.807-3.808 9.98-3.808 13.788 0M1.924 8.674c5.565-5.565 14.587-5.565 20.152 0M12.53 18.22l-.53.53-.53-.53a.75.75 0 0 1 1.06 0Z" />
+          </svg>
+        </button>
+      </div>
     </div>
 
     <div class="address-bar">
@@ -138,31 +180,8 @@
     <div class="activity-section">
       <h3>Recent Activity</h3>
       <div id="activityList" class="activity-list">
-        <div class="activity-item">
-          <div class="activity-icon received">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="8 17 12 21 16 17"></polyline>
-              <line x1="12" y1="12" x2="12" y2="21"></line>
-            </svg>
-          </div>
-          <div class="activity-info">
-            <div class="activity-type">Received</div>
-            <div class="activity-time">2 hours ago</div>
-          </div>
-          <div class="activity-amount positive">+0.5 SOL</div>
-        </div>
-        <div class="activity-item">
-          <div class="activity-icon sent">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <line x1="22" y1="2" x2="11" y2="13"></line>
-              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-            </svg>
-          </div>
-          <div class="activity-info">
-            <div class="activity-type">Sent</div>
-            <div class="activity-time">1 day ago</div>
-          </div>
-          <div class="activity-amount">-0.25 SOL</div>
+        <div style="text-align: center; padding: 20px; color: var(--text-tertiary);">
+          <p>Loading transactions...</p>
         </div>
       </div>
     </div>
@@ -195,11 +214,11 @@
       <div class="fee-box">
         <div class="fee-row">
           <span>Network Fee</span>
-          <span>0.000005 SOL</span> // TODO: add real logic
+          <span>~0.000005 SOL</span>
         </div>
         <div class="fee-row total">
           <span>Total</span>
-          <span id="totalAmount">0.000005 SOL</span> // TODO: add real logic
+          <span id="totalAmount">0.000005 SOL</span>
         </div>
       </div>
       <button type="submit" class="btn btn-primary">Review Transaction</button>
