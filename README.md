@@ -2,6 +2,10 @@
 
 Trying to build a simple solana wallet extension 
 
+## Demo Video
+
+[![Watch the video](https://img.youtube.com/vi/SskCbwJXDrI/0.jpg)](https://youtu.be/watch?v=SskCbwJXDrI)
+
 ## Step to Start
 1. clone repo locally
 ```sh
