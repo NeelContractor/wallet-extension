@@ -2,9 +2,6 @@
 
 Trying to build a simple solana wallet extension 
 
-## Status 
-- Building
-
 ## Step to Start
 1. clone repo locally
 ```sh
