@@ -33,8 +33,8 @@ npm install
 npm run build
 ```
 
-4. load to chrome extension 
+5. load to chrome extension 
 in browser go to chrome://extensions
 click on 'Load Unpack' on top right.
 
-5. open dist folder or wherever manifest.json file exists
+6. open dist folder or wherever manifest.json file exists
