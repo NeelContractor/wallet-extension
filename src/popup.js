@@ -601,7 +601,220 @@ async function copyToClipboard(text, btn) {
   }
 }
 
-// Show private key - FIXED
+// Show recovery phrase 
+function showRecoveryPhrase() {
+  if (!state.seedPhrase) {
+    alert('❌ Cannot export recovery phrase.\n\nThis wallet was imported from a private key, not a recovery phrase. You can only export the private key.');
+    return;
+  }
+
+  const confirmed = confirm(
+    '⚠️ WARNING ⚠️\n\n' +
+    'Never share your recovery phrase with anyone!\n' +
+    'Anyone with your recovery phrase can steal your funds.\n\n' +
+    'Are you sure you want to reveal your recovery phrase?'
+  );
+
+  if (!confirmed) return;
+
+  try {
+    const words = state.seedPhrase.split(' ');
+    const wordsList = words.map((word, i) => `${i + 1}. ${word}`).join('\n');
+    
+    // Show in a custom modal
+    const modalHTML = `
+      <div style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10000;
+        padding: 20px;
+      " id="recoveryPhraseModal">
+        <div style="
+          background: var(--bg-secondary);
+          border: 1px solid var(--border-primary);
+          border-radius: 12px;
+          padding: 24px;
+          max-width: 400px;
+          width: 100%;
+          max-height: 80vh;
+          overflow-y: auto;
+        ">
+          <h3 style="margin-bottom: 16px; color: var(--error);">⚠️ Recovery Phrase</h3>
+          <div style="
+            background: var(--bg-primary);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 16px;
+            word-break: break-all;
+            font-family: monospace;
+            font-size: 11px;
+            color: var(--text-primary);
+            white-space: pre-line;
+          ">${wordsList}</div>
+          <div style="
+            background: rgba(227, 123, 123, 0.08);
+            border: 1px solid rgba(227, 123, 123, 0.25);
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 16px;
+            font-size: 11px;
+            color: var(--error);
+          ">
+            ⚠️ Store this phrase safely offline. Never share it with anyone or enter it on untrusted websites.
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button 
+              id="copyRecoveryPhraseBtn"
+              class="btn btn-secondary" 
+              style="flex: 1;">
+              Copy Words
+            </button>
+            <button 
+              id="closeRecoveryPhraseModalBtn"
+              class="btn btn-primary" 
+              style="flex: 1;">
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+    
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+    
+    // Add event listeners after modal is in DOM
+    const copyBtn = document.getElementById('copyRecoveryPhraseBtn');
+    const closeBtn = document.getElementById('closeRecoveryPhraseModalBtn');
+    
+    if (copyBtn) {
+      copyBtn.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(state.seedPhrase);
+          copyBtn.textContent = '✓ Copied!';
+          copyBtn.style.background = 'var(--success)';
+          
+          setTimeout(() => {
+            copyBtn.textContent = 'Copy Words';
+            copyBtn.style.background = '';
+          }, 2000);
+        } catch (err) {
+          console.error('Copy failed:', err);
+          alert('❌ Failed to copy to clipboard');
+        }
+      });
+    }
+    
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () => {
+        document.getElementById('recoveryPhraseModal').remove();
+      });
+    }
+  } catch (error) {
+    alert('❌ Error getting recovery phrase: ' + error.message);
+  }
+}
+
+if (settingsBtn) {
+  settingsBtn.onclick = async () => {
+    // Show settings menu - UPDATED WITH EXPORT PHRASE
+    const settingsMenu = `
+      <div style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10000;
+        padding: 20px;
+      " id="settingsModal">
+        <div style="
+          background: var(--bg-secondary);
+          border: 1px solid var(--border-primary);
+          border-radius: 12px;
+          padding: 24px;
+          max-width: 300px;
+          width: 100%;
+        ">
+          <h3 style="margin-bottom: 16px;">Settings</h3>
+          <button 
+            id="switchNetworkBtn"
+            class="btn btn-secondary" 
+            style="width: 100%; margin-bottom: 8px;">
+            Switch Network (${state.network})
+          </button>
+          <button 
+            id="showRecoveryPhraseBtn"
+            class="btn btn-secondary" 
+            style="width: 100%; margin-bottom: 8px;">
+            Export Recovery Phrase
+          </button>
+          <button 
+            id="showPrivateKeyBtn"
+            class="btn btn-secondary" 
+            style="width: 100%; margin-bottom: 8px;">
+            Show Private Key
+          </button>
+          <button 
+            id="closeSettingsBtn"
+            class="btn btn-primary" 
+            style="width: 100%;">
+            Close
+          </button>
+        </div>
+      </div>
+    `;
+    
+    document.body.insertAdjacentHTML('beforeend', settingsMenu);
+    
+    const modal = document.getElementById('settingsModal');
+    
+    // Switch Network button
+    document.getElementById('switchNetworkBtn').addEventListener('click', async () => {
+      const currentNetwork = state.network;
+      const newNetwork = currentNetwork === 'mainnet-beta' ? 'devnet' : 'mainnet-beta';
+      
+      if (confirm(`Switch from ${currentNetwork} to ${newNetwork}?\n\n⚠️ Make sure you have funds on the new network!`)) {
+        const success = await switchNetwork(newNetwork);
+        if (success) {
+          modal.remove();
+          alert(`✅ Switched to ${newNetwork}!\n\nBalance and transactions updated.`);
+        } else {
+          alert('❌ Failed to switch network');
+        }
+      }
+    });
+    
+    document.getElementById('showRecoveryPhraseBtn').addEventListener('click', () => {
+      modal.remove();
+      showRecoveryPhrase();
+    });
+    
+    // Show Private Key button
+    document.getElementById('showPrivateKeyBtn').addEventListener('click', () => {
+      modal.remove();
+      showPrivateKey();
+    });
+    
+    // Close button
+    document.getElementById('closeSettingsBtn').addEventListener('click', () => {
+      modal.remove();
+    });
+  };
+}
+
+// Show private key 
 function showPrivateKey() {
   if (!state.keypair) {
     alert('❌ Wallet not unlocked. Please reload and unlock your wallet.');
@@ -1335,6 +1548,12 @@ function setupEventListeners() {
               Switch Network (${state.network})
             </button>
             <button 
+              id="showRecoveryPhraseBtn"
+              class="btn btn-secondary" 
+              style="width: 100%; margin-bottom: 8px;">
+              Show Recovery Phrase
+            </button>
+            <button 
               id="showPrivateKeyBtn"
               class="btn btn-secondary" 
               style="width: 100%; margin-bottom: 8px;">
@@ -1370,6 +1589,12 @@ function setupEventListeners() {
         }
       });
       
+      // Show Recovery Phrase Key button
+      document.getElementById('showRecoveryPhraseBtn').addEventListener('click', () => {
+        modal.remove();
+        showRecoveryPhrase();
+      });
+
       // Show Private Key button
       document.getElementById('showPrivateKeyBtn').addEventListener('click', () => {
         modal.remove();
