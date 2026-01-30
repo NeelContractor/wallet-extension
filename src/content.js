@@ -1,4 +1,3 @@
-
 console.log('Solana Wallet - Content Script Loaded');
 
 // Inject the provider script into the page

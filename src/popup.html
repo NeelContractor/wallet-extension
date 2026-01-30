@@ -55,6 +55,57 @@
     </form>
   </div>
 
+  <!-- Import Wallet Screen -->
+  <div id="importWalletScreen" class="screen">
+    <h2>Import Wallet</h2>
+    <p class="subtitle">Import using recovery phrase or private key</p>
+    
+    <!-- Import Method Tabs -->
+    <div class="import-tabs">
+      <button type="button" class="import-tab active" id="phraseTab">Recovery Phrase</button>
+      <button type="button" class="import-tab" id="privateKeyTab">Private Key</button>
+    </div>
+    
+    <form id="importWalletForm">
+      <!-- Seed Phrase Import (default) -->
+      <div id="phraseImportSection" class="import-section active">
+        <div class="input-group">
+          <label>Recovery Phrase (12 or 24 words)</label>
+          <textarea id="importSeedPhrase" placeholder="Enter your recovery phrase separated by spaces" rows="4"></textarea>
+          <div style="font-size: 11px; color: var(--text-tertiary); margin-top: 6px;">
+            Make sure each word is spelled correctly and separated by spaces
+          </div>
+        </div>
+      </div>
+      
+      <!-- Private Key Import -->
+      <div id="privateKeyImportSection" class="import-section">
+        <div class="input-group">
+          <label>Private Key (Base58)</label>
+          <textarea id="importPrivateKey" placeholder="Enter your private key in base58 format" rows="3"></textarea>
+          <div style="font-size: 11px; color: var(--text-tertiary); margin-top: 6px;">
+            Your private key should be 87-88 characters long
+          </div>
+        </div>
+      </div>
+      
+      <!-- Password (common for both) -->
+      <div class="input-group">
+        <label>New Password</label>
+        <input type="password" id="importPassword" placeholder="Create a password (min 8 characters)" required>
+      </div>
+      <div class="input-group">
+        <label>Confirm Password</label>
+        <input type="password" id="importConfirmPassword" placeholder="Confirm password" required>
+      </div>
+      
+      <div class="button-group">
+        <button type="button" class="btn btn-secondary" id="backFromImport">Back</button>
+        <button type="submit" class="btn btn-primary" id="importSubmitBtn">Import Wallet</button>
+      </div>
+    </form>
+  </div>
+
   <!-- Create Password Screen -->
   <div id="createPasswordScreen" class="screen">
     <h2>Create Password</h2>
@@ -187,6 +238,33 @@
     </div>
   </div>
 
+  <!-- Approval Screen -->
+  <div id="approvalScreen" class="screen">
+    <div class="approval-container">
+      <div class="approval-header">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--warning)" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+        <h2 id="approvalType">Approve Transaction</h2>
+      </div>
+      
+      <div class="approval-details" id="approvalDetails">
+        <!-- Details will be inserted here -->
+      </div>
+
+      <div class="approval-warning">
+        ⚠️ Only approve if you trust this transaction
+      </div>
+
+      <div class="approval-buttons">
+        <button class="btn btn-secondary" id="rejectBtn">Reject</button>
+        <button class="btn btn-primary" id="approveBtn">Approve</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Send Screen -->
   <div id="sendScreen" class="screen">
     <div class="screen-header">
@@ -250,6 +328,65 @@
         Copy Address
       </button>
     </div>
+  </div>
+
+  <!-- Swap Screen -->
+  <div id="swapScreen" class="screen">
+    <div class="screen-header">
+      <button class="icon-btn" id="backFromSwap">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+      </button>
+      <h2>Swap Tokens</h2>
+    </div>
+    <form id="swapForm">
+      <div class="swap-info-box">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="16" x2="12" y2="12"></line>
+          <line x1="12" y1="8" x2="12.01" y2="8"></line>
+        </svg>
+        <span>Powered by Jupiter Aggregator • Mainnet Only</span>
+      </div>
+      
+      <div class="input-group">
+        <label>You Pay</label>
+        <div class="amount-input">
+          <input type="number" id="swapInAmount" placeholder="0.00" step="0.01" required>
+          <span class="currency">SOL</span>
+        </div>
+      </div>
+
+      <div class="swap-arrow">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <polyline points="19 12 12 19 5 12"></polyline>
+        </svg>
+      </div>
+
+      <div class="input-group">
+        <label>You Receive (estimated)</label>
+        <div class="amount-input">
+          <input type="number" id="swapOutAmount" placeholder="0.00" step="0.01" readonly>
+          <span class="currency">USDC</span>
+        </div>
+      </div>
+
+      <div class="fee-box">
+        <div class="fee-row">
+          <span>Exchange Rate</span>
+          <span id="swapRate">Fetching...</span>
+        </div>
+        <div class="fee-row">
+          <span>Slippage Tolerance</span>
+          <span>0.5%</span>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Execute Swap</button>
+    </form>
   </div>
 
   <script src="popup.js"></script>

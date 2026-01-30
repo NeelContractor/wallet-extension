@@ -132,6 +132,15 @@ body {
   margin: 0 auto;
 }
 
+/* Import Wallet Screen */
+#importWalletScreen {
+  padding-top: 40px;
+}
+
+#importWalletScreen .subtitle {
+  text-align: center;
+}
+
 .wallet-icon {
   margin: 0 auto 24px;
 }
@@ -261,6 +270,7 @@ h2 {
   resize: vertical;
   min-height: 100px;
   line-height: 1.5;
+  font-family: 'SF Mono', 'Menlo', 'Monaco', 'Courier New', monospace;
 }
 
 /* Seed Phrase */
@@ -624,6 +634,13 @@ h2 {
   margin-top: 2px;
 }
 
+.activity-signature {
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-top: 2px;
+  font-family: monospace;
+}
+
 .activity-amount {
   font-weight: 600;
   color: var(--text-primary);
@@ -633,6 +650,108 @@ h2 {
 
 .activity-amount.positive {
   color: var(--accent);
+}
+
+/* Approval Screen */
+#approvalScreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 24px;
+}
+
+#approvalScreen:not(.active) {
+  display: none;
+}
+
+.approval-container {
+  width: 100%;
+  max-width: 320px;
+  background: var(--bg-primary);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: var(--shadow-lg);
+}
+
+.approval-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.approval-header svg {
+  margin-bottom: 16px;
+}
+
+.approval-header h2 {
+  margin-bottom: 0;
+}
+
+.approval-details {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.approval-detail-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.approval-detail-row:last-child {
+  margin-bottom: 0;
+}
+
+.approval-detail-row.total {
+  padding-top: 12px;
+  border-top: 1px solid var(--border-subtle);
+  margin-top: 12px;
+  font-weight: 600;
+}
+
+.approval-detail-row span:first-child {
+  color: var(--text-secondary);
+}
+
+.approval-detail-row span:last-child {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.approval-detail-row .monospace {
+  font-family: 'SF Mono', monospace;
+  font-size: 12px;
+}
+
+.approval-detail-row .highlight {
+  color: var(--accent);
+}
+
+.approval-warning {
+  background: rgba(232, 168, 124, 0.1);
+  border: 1px solid rgba(232, 168, 124, 0.3);
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 20px;
+  font-size: 13px;
+  color: var(--warning);
+  text-align: center;
+}
+
+.approval-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
 }
 
 /* Send/Receive Screens */
@@ -754,6 +873,76 @@ h2 {
   color: var(--text-secondary);
   font-weight: 500;
   line-height: 1.6;
+}
+
+/* Swap Screen */
+.swap-info-box {
+  background: rgba(123, 159, 232, 0.1);
+  border: 1px solid rgba(123, 159, 232, 0.3);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--info);
+}
+
+.swap-info-box svg {
+  flex-shrink: 0;
+}
+
+.swap-arrow {
+  text-align: center;
+  margin: -10px 0;
+  color: var(--text-tertiary);
+}
+
+.swap-arrow svg {
+  opacity: 0.6;
+}
+
+/* Import Wallet Tabs */
+.import-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  padding: 4px;
+}
+
+.import-tab {
+  flex: 1;
+  padding: 10px 16px;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.import-tab:hover {
+  color: var(--text-primary);
+  background: rgba(139, 125, 214, 0.1);
+}
+
+.import-tab.active {
+  background: var(--primary);
+  color: white;
+}
+
+.import-section {
+  display: none;
+}
+
+.import-section.active {
+  display: block;
 }
 
 /* Custom Scrollbar */

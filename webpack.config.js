@@ -38,7 +38,6 @@ module.exports = {
         ]
     },
     resolve: {
-        
         fallback: {
             "crypto": false,
             "stream": require.resolve("stream-browserify"),
